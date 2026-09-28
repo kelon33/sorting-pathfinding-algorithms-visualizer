@@ -34,3 +34,17 @@ Two scripts, loaded in order via `<script>` tags (no bundler, no modules):
 
 1. Write a new generator in `algorithms.js` that yields the same step shape as the existing ones.
 2. Register it in the `ALGORITHMS` map in `visualizer.js` (key, display `name`, `fn`, one-sentence `description`) — the dropdown and description panel are built from this map, nothing else needs to change.
+
+## Known pitfall: percentage heights need an explicit parent height
+
+Bars in `style.css` are sized with `height: X%`. Percentage heights only resolve against a parent that has an *explicit* height — `min-height` doesn't count, even though the box visually has a height. `#bars` must keep a fixed `height` (currently `420px`), not `min-height`, or every bar silently collapses to `0` and the chart renders empty with no console error. This bit us once already; watch for it if the layout is reworked to be more responsive.
+
+## Verification
+
+No automated tests, linter, or CI — verification is manual, in an actual browser (open the file, or serve it and drive it with browser automation; see the `file://` note above). When changing rendering or playback logic, exercise: bars appearing on load, all 5 algorithms via the dropdown (description text updates, animation runs to a fully sorted/green state), Step in isolation, Pause mid-sort, and both sliders — and check the browser console for errors, since a broken render can fail silently (see the pitfall above).
+
+## Repository
+
+Public GitHub repo: https://github.com/kelon33/sorting-pathfinding-algorithms-visualizer (remote `origin`, branch `master`). Git identity is configured locally (`kelon33`, `kelon33@gmail.com`). Commit history is kept as a small number of clean, logically-grouped commits (e.g. "add the app" separate from "add docs") rather than one per file or per edit — follow that convention for new work rather than committing every small change individually.
+
+The repo name references "pathfinding" as well as sorting — no pathfinding visualizer exists yet or has been scoped. Don't start building one without the user asking.
