@@ -5,6 +5,9 @@
 //   type    - 'compare' | 'swap' | 'overwrite' | 'sorted'
 //   indices - which bar(s) the step applies to (for highlighting)
 // visualizer.js pulls these steps one at a time to animate the sort.
+// Each yield uses a.slice() (not a) so the step keeps its own frozen copy —
+// otherwise every previously yielded step would show today's array state,
+// since they'd all reference the same array object as it keeps mutating.
 
 function* bubbleSort(arr) {
   const a = arr.slice();
